@@ -61,8 +61,15 @@ export const updateUser = async (
   }
 };
 
-export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
+    const { id } = req.params;
+    await prisma.user.delete({ where: { id } });
+    res.status(200).json({ mesaage: "deleted successfully" });
   } catch (error) {
     next(error);
   }
