@@ -1,22 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "..";
 
-export const getUserLists = (
+export const getUserLists = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const users = await prisma.user.findMany();
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
 };
-export const getUserById = (
+export const getUserById = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const { id } = req.params;
+    const users = await prisma.user.findMany({ where: { id } });
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
